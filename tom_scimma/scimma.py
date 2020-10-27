@@ -50,7 +50,7 @@ class SCIMMABrokerForm(GenericQueryForm):
             ),
             HTML('<hr>'),
             Fieldset(
-                'LVC Trigger Number',
+                'LVC Trigger Number',  # TODO: make sure LVC Trigger Number can be combined with all other filters besides topic
                 HTML('''
                     <p>
                     The LVC Trigger Number filter will only search the LVC topic. Please be aware that any topic
@@ -60,6 +60,12 @@ class SCIMMABrokerForm(GenericQueryForm):
                 'event_trigger_number'
             )
         )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get('event_trigger_number') and cleaned_data.get('topic'):
+            raise forms.ValidationError('Topic filter cannot be used with LVC Trigger Number filter.')
+        return cleaned_data
 
 class SCIMMABroker(GenericBroker):
     """
@@ -76,7 +82,6 @@ class SCIMMABroker(GenericBroker):
                                 headers=settings.BROKER_CREDENTIALS['SCIMMA'])
         response.raise_for_status()
         result = response.json()
-        print(len(result['results']))
         return iter(result['results'])
 
     def fetch_alert(self, alert_id):
@@ -90,7 +95,6 @@ class SCIMMABroker(GenericBroker):
         pass
 
     def to_generic_alert(self, alert):
-        print(alert)
         score = alert['message'].get('rank', 0) if alert['topic'] == 'lvc-counterpart' else ''
         return GenericAlert(
             url=f'{SCIMMA_API_URL}/alerts/{alert["id"]}',
