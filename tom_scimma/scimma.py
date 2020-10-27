@@ -91,31 +91,30 @@ class SCIMMABroker(GenericBroker):
         parsed = response.json()
         return parsed
 
-    def process_reduced_data(self, target, alert=None):
-        pass
-
     def to_generic_alert(self, alert):
         score = alert['message'].get('rank', 0) if alert['topic'] == 'lvc-counterpart' else ''
         return GenericAlert(
             url=f'{SCIMMA_API_URL}/alerts/{alert["id"]}',
             id=alert['id'],
             # This should be the object name if it is in the comments
-            name=alert['id'],
+            name=alert['alert_identifier'],
             ra=alert['right_ascension'],
             dec=alert['declination'],
             timestamp=alert['alert_timestamp'],
             # Well mag is not well defined for XRT sources...
             mag=0.0,
-            score = score  # Not exactly what score means, but ish
+            score=score  # Not exactly what score means, but ish
         )
 
     def to_target(self, alert):
         # Galactic Coordinates come in the format:
         # "gal_coords": "76.19,  5.74 [deg] galactic lon,lat of the counterpart",
-        gal_coords = alert['message']['gal_coords'].split('[')[0].split(',')
-        gal_coords = [float(coord.strip()) for coord in gal_coords]
+        gal_coords = [None, None]
+        if alert['topic'] == 'lvc-counterpart':
+            gal_coords = alert['message'].get('gal_coords', '').split('[')[0].split(',')
+            gal_coords = [float(coord.strip()) for coord in gal_coords]
         return Target.objects.create(
-            name=alert['name'],
+            name=alert['alert_identifier'],
             type='SIDEREAL',
             ra=alert['right_ascension'],
             dec=alert['right_ascension'],
