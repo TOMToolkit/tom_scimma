@@ -15,6 +15,9 @@ from tom_targets.models import Target, TargetName
 
 
 class TestSCIMMABrokerForm(TestCase):
+    """
+    NOTE: to run these tests in your venv: python ./tom_scimma/tests/run_tests.py
+    """
     def setUp(self):
         mock_topic_choices = {
             'count': 1, 
@@ -28,11 +31,12 @@ class TestSCIMMABrokerForm(TestCase):
         self.mock_response.status_code = 200
 
     def test_boilerplate(self):
-        """make sure the testing infrastructure is working"""
+        """Make sure the testing infrastructure is working."""
         self.assertTrue(True)
 
     @patch('tom_scimma.scimma.requests.get')
     def test_clean_topic_and_trigger_number(self, mock_requests_get):
+        """Test that an error is thrown when both Topic and LVC Trigger Number are included in form submission."""
         mock_requests_get.return_value = self.mock_response
 
         form = SCIMMABrokerForm({'query_name': 'Test SCIMMA Query',
@@ -47,7 +51,7 @@ class TestSCIMMABrokerForm(TestCase):
 @override_settings(BROKER_CREDENTIALS={'SCIMMA': {'api_key': ''}})
 class TestSCIMMABrokerClass(TestCase):
     """
-    NOTE: to run these tests in your venv: python ./tom_scimma/tests/run_tests.py
+    NOTE: To run these tests in your venv: python ./tom_scimma/tests/run_tests.py
     """
 
     def setUp(self):
@@ -66,12 +70,14 @@ class TestSCIMMABrokerClass(TestCase):
 
         alerts_response = SCIMMABroker().fetch_alerts({})
 
-        # TODO: compare iterator length with len(self.alerts)
         alerts = [alert for alert in alerts_response]
         self.assertEqual(len(alerts), 20)
         self.assertEqual(alerts[0], self.alerts[0])
 
     def test_to_generic_alert_any_topic(self):
+        """
+        Test the SCIMMA-specific to_generic_alert logic.
+        """
         test_alert = self.alerts[0]
         test_alert['topic'] = 'gcn'
         test_alert['message'] = {'rank': '3'}
@@ -82,6 +88,9 @@ class TestSCIMMABrokerClass(TestCase):
         self.assertEqual(generic_alert.score, '')
 
     def test_to_generic_alert_lvc_topic(self):
+        """
+        Test the to_generic_alert logic for lvc-counterpart alerts. Should result in the inclusion of score.
+        """
         test_alert = self.alerts[0]
         test_alert['topic'] = 'lvc-counterpart'
         test_alert['message'] = {'rank': '3'}
@@ -92,6 +101,9 @@ class TestSCIMMABrokerClass(TestCase):
         self.assertEqual(generic_alert.score, '3')
 
     def test_to_target_any_topic(self):
+        """
+        Test the SCIMMA-specific to_target logic.
+        """
         test_alert = self.alerts[0]
         test_alert['topic'] = 'gcn'
         SCIMMABroker().to_target(test_alert)
@@ -102,6 +114,9 @@ class TestSCIMMABrokerClass(TestCase):
         self.assertEqual(target.galactic_lat, None)
 
     def test_to_target_lvc_topic(self):
+        """
+        Test the to_target logic for lvc-counterpart alerts. Should result in the inclusion of galactic coordinates.
+        """
         test_alert = self.alerts[0]
         test_alert['topic'] = 'lvc-counterpart'
         test_alert['message']['gal_coords'] = '336.99,-45.74 [deg] galactic lon,lat of the counterpart'

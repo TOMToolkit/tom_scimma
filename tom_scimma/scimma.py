@@ -3,8 +3,11 @@ import requests
 from crispy_forms.layout import Column, Div, Fieldset, HTML, Layout, Row
 from django import forms
 from django.conf import settings
+from hop import Stream
+from hop.auth import Auth
 
 from tom_alerts.alerts import GenericQueryForm, GenericAlert, GenericBroker
+from tom_alerts.exceptions import AlertSubmissionException
 from tom_targets.models import Target
 
 SCIMMA_URL = 'http://skip.dev.hop.scimma.org'
@@ -50,7 +53,7 @@ class SCIMMABrokerForm(GenericQueryForm):
             ),
             HTML('<hr>'),
             Fieldset(
-                'LVC Trigger Number',  # TODO: make sure LVC Trigger Number can be combined with all other filters besides topic
+                'LVC Trigger Number',
                 HTML('''
                     <p>
                     The LVC Trigger Number filter will only search the LVC topic. Please be aware that any topic
@@ -121,3 +124,49 @@ class SCIMMABroker(GenericBroker):
             galactic_lng=gal_coords[0],
             galactic_lat=gal_coords[1],
         )
+
+    def submit_upstream_alert(self, target=None, observation_record=None, **kwargs):
+        """
+        Submits target and observation record as Hopskotch alerts.
+
+        :param target: ``Target`` object to be converted to an alert and submitted upstream
+        :type target: ``Target``
+
+        :param observation_record: ``ObservationRecord`` object to be converted to an alert and submitted upstream
+        :type observation_record: ``ObservationRecord``
+
+        :param \**kwargs:
+            See below
+
+        :Keyword Arguments:
+            * *topic* (``str``): Hopskotch topic to submit the alert to.
+
+        :returns: True or False depending on success of message submission
+        :rtype: bool
+
+        :raises:
+            AlertSubmissionException: If topic is not provided to the function and a default is not provided in
+                                      settings
+        # TODO: write tests for this
+        """
+        super().submit_upstream_alert(target=target, observation_record=observation_record)
+
+        creds = settings.BROKERS['SCIMMA']
+        stream = Stream(auth=Auth(creds['hopskotch_username'], creds['hopskotch_password']))
+        stream_url = creds['hopskotch_url']
+        topic = kwargs.pop('topic', creds['default_hopskotch_topic'])
+
+        if not topic:
+            raise AlertSubmissionException(f'Topic must be provided to submit alert to {self.name}')
+        
+        with stream.open(f'{stream_url}:9092/{topic}', 'w') as s:
+            if target:
+                message = {'type': 'target', 'name': obj.name, 'ra': obj.ra, 'dec': obj.dec}
+                s.write(message)
+            if observation_record:
+                message = {'type': 'observation', 'status': obj.status, 'parameters': obj.parameters_as_dict,
+                           'target': obj.target.name, 'ra': obj.target.ra, 'dec': obj.target.dec,
+                           'facility': obj.facility}
+                s.write(message)
+        
+        return True
