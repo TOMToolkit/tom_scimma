@@ -1,0 +1,32 @@
+language: python
+python:
+  - '3.8'
+  - '3.7'
+  - '3.6'
+os: linux
+dist: bionic
+
+before_install:
+  - sudo apt-get install -y gfortran
+  - pip uninstall -y numpy
+
+install: pip install -r requirements.txt coverage coveralls
+
+script: coverage run --include=tom_scimma/scimma.py python ./tom_scimma/tests/run_tests.py
+
+after_success: coveralls
+
+jobs:
+  include:
+    - stage: "Style Checks"
+      install: pip install -I flake8
+      script: flake8 tom_* --max-line-length=120
+
+    - stage: "test"
+      os: osx
+      language: shell
+      before_install: pip3 install -U pip
+
+    - stage: "Canary Test"
+      if: env(TRAVIS_EVENT_TYPE) == "cron"
+      script: skip
