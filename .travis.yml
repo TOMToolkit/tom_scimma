@@ -30,7 +30,6 @@ jobs:
   include:
   - stage: Style Checks
     if: env(TRAVIS_EVENT_TYPE) != "cron"
-    before_install: skip
     install: pip install -I flake8
     script: flake8 tom_* --max-line-length=120
   - stage: canary
