@@ -30,16 +30,10 @@ jobs:
   include:
   - stage: Style Checks
     if: env(TRAVIS_EVENT_TYPE) != "cron"
+    before_install: skip
     install: pip install -I flake8
     script: flake8 tom_* --max-line-length=120
-  - stage: test
-    if: env(TRAVIS_EVENT_TYPE) != "cron"
-    os: osx
-    language: shell
-    before_install: pip3 install -U pip
   - stage: canary
     python: '3.8'
     if: env(TRAVIS_EVENT_TYPE) == "cron"
     script: python tom_scimma/tests/run_canary_tests.py
-  - stage: travis_event_type
-    script: echo env(TRAVIS_EVENT_TYPE)
