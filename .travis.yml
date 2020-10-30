@@ -21,6 +21,7 @@ script: coverage run --include=tom_scimma/scimma.py tom_scimma/tests/run_tests.p
 after_success: coveralls
 
 stages:
+- travis_event_type
 - Style Checks
 - test
 - canary
@@ -38,5 +39,7 @@ jobs:
     before_install: pip3 install -U pip
   - stage: canary
     python: '3.8'
-    if: env(TRAVIS_EVENT_TYPE) = "cron"
+    if: env(TRAVIS_EVENT_TYPE) == "cron"
     script: python tom_scimma/tests/run_canary_tests.py
+  - stage: travis_event_type
+    script: echo env(TRAVIS_EVENT_TYPE)
