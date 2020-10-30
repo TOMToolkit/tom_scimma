@@ -1,6 +1,5 @@
 language: python
-python:
-- '3.8'
+python: 3.8
 os: linux
 dist: bionic
 cache: pip
@@ -28,6 +27,7 @@ jobs:
     python:
       - '3.7'
       - '3.6'
+    if: type = pull_request
   - stage: Style Checks
     if: type != cron
     install: pip install -I flake8
