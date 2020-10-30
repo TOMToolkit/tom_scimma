@@ -1,7 +1,7 @@
 from django.test import tag, TestCase
 
 # from tom_scimma.scimma import SCIMMABroker
-from tom_targets.models import Target
+# from tom_targets.models import Target
 
 
 @tag('canary')
@@ -11,7 +11,7 @@ class TestSCIMMAModuleCanary(TestCase):
     """
 
     def setUp(self):
-        self.broker = SCIMMABroker()
+        # self.broker = SCIMMABroker()
         self.expected_keys = ['id', 'alert_identifier', 'alert_timestamp', 'topic', 'right_ascension', 'declination',
                               'right_ascension_sexagesimal', 'declination_sexagesimal', 'role', 'extracted_fields',
                               'message', 'created', 'modified']
@@ -36,6 +36,7 @@ class TestSCIMMAModuleCanary(TestCase):
 
     # def test_submit_upstream_alert(self):
     #     t = Target.objects.create(name='canary test target', ra=1, dec=2)
-    #     response = self.broker.submit_upstream_alert(target=t, observation_record=None, topic='tom-scimma-canary-test')
+    #     response = self.broker.submit_upstream_alert(
+    #       target=t, observation_record=None, topic='tom-scimma-canary-test')
 
     #     self.assertTrue(response)
