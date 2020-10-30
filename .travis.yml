@@ -6,6 +6,8 @@ python:
 os: linux
 dist: bionic
 
+script: coverage run --include=tom_scimma/scimma.py tom_scimma/tests/run_tests.py
+
 env:
   global:
   - secure: tRZb1ut4FotbmpUDXWZxN6ehTvF2azB3s7GIevyxTCbfk7iKNk46LQqixU3nalLL3/0KGKyJvwwEnf69oXxn9As9iwkJ/8rqoMlQrTCVijuE9CslVTa8bCxu2EIo6EuDoN9eV/ENefttB5Ra4EldHb1t87Wh2s0nvWsubJVqo8mCQGzu6Z3TTrC3cIyR8IC06jMX/B2upNcS/wziDvYROTUGoe3uf+AvmQC1rHXDL4y1AqTzD4eH4RoLQjc0/4oN4+3ueks8KLOuW+NBi5fyCzXcisn6rhzMT40hz4lc8w/2EqCUOcKFeP9v/cJsyqCGtHiowijN3F2f7ups8P9M0N1Hp7uJGynq+srRJQs7DbeTfWhLbld2J8YwUZJDBBj8xhH4r1+rGQZISgOv4BV+Hufq62S2mvBMAR/A5M4XfW/z1Lqv4joB8C+fQ+Ri9dlmQUBPKkBaHJyXt50/7vumzLOXXoQqARkKoXwkJD8A/P/8+X8PJrLcX8U8gmBcMqnc7Xn5098sqhlss4lQcNanvVsiH2lSJIlSXSwzsDoH3YJ7O+0NihljyJb57Cx4c6JZwa/G33haVz9paIIJxFUi9u3EVeAFMGJRw3K7+5WD+t2L3DY2AknnZ2SJYCyQKZXHsL6oZ3jG/ENbfEV7KuQUlG3l42aUcMsSZysA5/7U0FM=
