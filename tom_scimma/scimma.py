@@ -25,7 +25,7 @@ class SCIMMABrokerForm(GenericQueryForm):
     keyword = forms.CharField(required=False, label='Keyword search')
     topic = forms.MultipleChoiceField(choices=get_topic_choices, required=False, label='Topic')
     cone_search = forms.CharField(required=False, label='Cone Search', help_text='RA, Dec, radius in degrees')
-    polygon_search = forms.CharField(required=False, label='Polygon Search', 
+    polygon_search = forms.CharField(required=False, label='Polygon Search',
                                      help_text='Comma-separated pairs of space-delimited coordinates (degrees)')
     alert_timestamp_after = forms.DateTimeField(required=False, label='Datetime lower')
     alert_timestamp_before = forms.DateTimeField(required=False, label='Datetime upper')
@@ -70,6 +70,7 @@ class SCIMMABrokerForm(GenericQueryForm):
         if cleaned_data.get('event_trigger_number') and cleaned_data.get('topic'):
             raise forms.ValidationError('Topic filter cannot be used with LVC Trigger Number filter.')
         return cleaned_data
+
 
 class SCIMMABroker(GenericBroker):
     """
@@ -136,7 +137,7 @@ class SCIMMABroker(GenericBroker):
         :param observation_record: ``ObservationRecord`` object to be converted to an alert and submitted upstream
         :type observation_record: ``ObservationRecord``
 
-        :param \**kwargs:
+        :param \\**kwargs:
             See below
 
         :Keyword Arguments:
@@ -159,7 +160,7 @@ class SCIMMABroker(GenericBroker):
 
         if not topic:
             raise AlertSubmissionException(f'Topic must be provided to submit alert to {self.name}')
-        
+
         try:
             with stream.open(f'kafka://{stream_url}:9092/{topic}', 'w') as s:
                 if target:
@@ -174,5 +175,5 @@ class SCIMMABroker(GenericBroker):
                     s.write(message)
         except KafkaException as e:
             raise AlertSubmissionException(f'Submission to Hopskotch failed: {e}')
-        
+
         return True

@@ -1,4 +1,4 @@
-from django.test import override_settings, tag, TestCase
+from django.test import tag, TestCase
 
 from tom_scimma.scimma import SCIMMABroker
 from tom_targets.models import Target
@@ -13,8 +13,8 @@ class TestSCIMMAModuleCanary(TestCase):
     def setUp(self):
         self.broker = SCIMMABroker()
         self.expected_keys = ['id', 'alert_identifier', 'alert_timestamp', 'topic', 'right_ascension', 'declination',
-                         'right_ascension_sexagesimal', 'declination_sexagesimal', 'role', 'extracted_fields',
-                         'message', 'created', 'modified']
+                              'right_ascension_sexagesimal', 'declination_sexagesimal', 'role', 'extracted_fields',
+                              'message', 'created', 'modified']
 
     def test_fetch_alerts(self):
         response = self.broker.fetch_alerts({'topic': 1})
@@ -22,14 +22,14 @@ class TestSCIMMAModuleCanary(TestCase):
         for alert in response:
             alerts.append(alert)
             for key in self.expected_keys:
-                self.assertTrue(key in alert.keys()) 
+                self.assertTrue(key in alert.keys())
         self.assertEqual(len(alerts), 20)
 
     def test_fetch_alert(self):
         alert = self.broker.fetch_alert(6911)
         self.assertEqual(alert['right_ascension'], 242.322)
         for key in self.expected_keys:
-            self.assertTrue(key in alert.keys()) 
+            self.assertTrue(key in alert.keys())
 
     def test_submit_upstream_alert(self):
         t = Target.objects.create(name='canary test target', ra=1, dec=2)

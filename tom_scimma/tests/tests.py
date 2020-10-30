@@ -1,18 +1,14 @@
-from datetime import datetime, timezone
-from itertools import repeat
 import json
 from requests import Response
 from unittest.mock import mock_open, patch
 
-from django.conf import settings
 from django.core.exceptions import NON_FIELD_ERRORS
-from django.test import override_settings, tag, TestCase
-import factory
+from django.test import override_settings, TestCase
 
 from tom_alerts.exceptions import AlertSubmissionException
 from tom_scimma.scimma import SCIMMABrokerForm, SCIMMABroker
 from tom_scimma.tests.utils import create_test_alert
-from tom_targets.models import Target, TargetName
+from tom_targets.models import Target
 
 
 class TestSCIMMABrokerForm(TestCase):
@@ -21,7 +17,7 @@ class TestSCIMMABrokerForm(TestCase):
     """
     def setUp(self):
         mock_topic_choices = {
-            'count': 1, 
+            'count': 1,
             'results': [
                 {'id': 1, 'name': 'gcn'},
                 {'id': 2, 'name': 'lvc-counterpart'}
