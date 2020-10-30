@@ -30,10 +30,6 @@ jobs:
     if: type != cron
     install: pip install -I flake8
     script: flake8 tom_* --max-line-length=120
-  - stage: "test"
-    os: osx
-    language: shell
-    before_install: pip3 install -U pip
   - stage: "Canary Tests"
     python: '3.8'
     if: type = cron
