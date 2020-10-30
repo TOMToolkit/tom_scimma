@@ -159,7 +159,8 @@ class SCIMMABroker(GenericBroker):
         creds = settings.BROKERS['SCIMMA']
         stream = Stream(auth=Auth(creds['hopskotch_username'], creds['hopskotch_password']))
         stream_url = creds['hopskotch_url']
-        topic = kwargs.get('topic') if kwargs.get('topic') != '' else creds['default_hopskotch_topic']
+        topic = kwargs.get('topic') if not kwargs.get('topic') else creds['default_hopskotch_topic']
+        print(topic)
 
         if not topic:
             raise AlertSubmissionException(f'Topic must be provided to submit alert to {self.name}')

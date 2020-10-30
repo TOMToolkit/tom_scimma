@@ -50,9 +50,7 @@ class TestSCIMMABrokerForm(TestCase):
                                        'hopskotch_url': 'test_url', 'default_hopskotch_topic': 'default'}
                             })
 class TestSCIMMABrokerClass(TestCase):
-    """
-    NOTE: To run these tests in your venv: python ./tom_scimma/tests/run_tests.py
-    """
+    """NOTE: To run these tests in your venv: python ./tom_scimma/tests/run_tests.py"""
 
     def setUp(self):
         # Create 20 alerts
@@ -60,9 +58,7 @@ class TestSCIMMABrokerClass(TestCase):
 
     @patch('tom_scimma.scimma.requests.get')
     def test_fetch_alerts(self, mock_requests_get):
-        """
-        Test the SCIMMA-specific fetch_alerts logic.
-        """
+        """Test the SCIMMA-specific fetch_alerts logic."""
         mock_response = Response()
         mock_response._content = str.encode(json.dumps({'results': self.alerts}))
         mock_response.status_code = 200
@@ -75,9 +71,7 @@ class TestSCIMMABrokerClass(TestCase):
         self.assertEqual(alerts[0], self.alerts[0])
 
     def test_to_generic_alert_any_topic(self):
-        """
-        Test the SCIMMA-specific to_generic_alert logic.
-        """
+        """Test the SCIMMA-specific to_generic_alert logic."""
         test_alert = self.alerts[0]
         test_alert['topic'] = 'gcn'
         test_alert['message'] = {'rank': '3'}
@@ -88,9 +82,7 @@ class TestSCIMMABrokerClass(TestCase):
         self.assertEqual(generic_alert.score, '')
 
     def test_to_generic_alert_lvc_topic(self):
-        """
-        Test the to_generic_alert logic for lvc-counterpart alerts. Should result in the inclusion of score.
-        """
+        """Test the to_generic_alert logic for lvc-counterpart alerts. Should result in the inclusion of score."""
         test_alert = self.alerts[0]
         test_alert['topic'] = 'lvc-counterpart'
         test_alert['message'] = {'rank': '3'}
@@ -101,9 +93,7 @@ class TestSCIMMABrokerClass(TestCase):
         self.assertEqual(generic_alert.score, '3')
 
     def test_to_target_any_topic(self):
-        """
-        Test the SCIMMA-specific to_target logic.
-        """
+        """Test the SCIMMA-specific to_target logic."""
         test_alert = self.alerts[0]
         test_alert['topic'] = 'gcn'
         SCIMMABroker().to_target(test_alert)
@@ -139,7 +129,7 @@ class TestSCIMMABrokerClass(TestCase):
         """Test that submission with no topic succeeds, using the default topic."""
         t = Target.objects.create(name='test name', ra=1, dec=2)
         with patch('tom_scimma.scimma.Stream.open', mock_open(read_data='data')) as mock_stream:
-            SCIMMABroker().submit_upstream_alert(target=t, observation_record=None)
+            SCIMMABroker().submit_upstream_alert(target=t, observation_record=None, topic=None)
             mock_stream.assert_called_once_with('kafka://test_url:9092/default', 'w')
             mock_stream().write.assert_called_with({'type': 'target', 'target_name': t.name, 'ra': t.ra, 'dec': t.dec})
 

@@ -3,7 +3,7 @@ This module adds [Hopskotch](https://scimma.org/projects.html) and [Skip](http:/
 support to the TOM Toolkit. Using this module, TOMs can query alerts submitted to the Hopskotch stream, and publish
 alerts to Hopskotch.
 
-## Installation:
+## Installation
 
 Install the module into your TOM environment:
 
@@ -21,7 +21,7 @@ Though Skip alerts are public (for now), you'll need Hopskotch credentials to su
 account [here](https://admin.dev.hop.scimma.org/hopauth/login?next=/hopauth/). Add the appropriate Skip and Hopskotch
 credentials to your project's `settings.py`:
 
-```
+```python
     BROKERS = {
         'SCIMMA': {
             'url': 'http://skip.dev.hop.scimma.org',
@@ -55,7 +55,7 @@ includes a keyword argument for topic. To use it,
 
 Add `tom_scimma` to your `settings.INSTALLED_APPS`:
 
-```
+```python
     INSTALLED_APPS = [
         'django.contrib.admin',
         'django.contrib.auth',
