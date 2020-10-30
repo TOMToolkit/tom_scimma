@@ -2,6 +2,7 @@ import json
 from requests import Response
 from unittest.mock import mock_open, patch
 
+from confluent_kafka import KafkaException
 from django.core.exceptions import NON_FIELD_ERRORS
 from django.test import override_settings, TestCase
 
@@ -46,7 +47,7 @@ class TestSCIMMABrokerForm(TestCase):
 
 
 @override_settings(BROKERS={'SCIMMA': {'api_key': '', 'hopskotch_username': '', 'hopskotch_password': '',
-                                       'hopskotch_url': '', 'default_hopskotch_topic': ''}
+                                       'hopskotch_url': 'test_url', 'default_hopskotch_topic': 'default'}
                             })
 class TestSCIMMABrokerClass(TestCase):
     """
@@ -126,20 +127,35 @@ class TestSCIMMABrokerClass(TestCase):
         self.assertIsInstance(target, Target)
         self.assertEqual(target.galactic_lat, -45.74)
 
+    def test_submit_upstream_alert_with_topic(self):
+        """Test that successful submission uses the provided topic."""
+        t = Target.objects.create(name='test name', ra=1, dec=2)
+        with patch('tom_scimma.scimma.Stream.open', mock_open(read_data='data')) as mock_stream:
+            SCIMMABroker().submit_upstream_alert(target=t, observation_record=None, topic='test')
+            mock_stream.assert_called_once_with(f'kafka://test_url:9092/test', 'w')
+            mock_stream().write.assert_called_with({'type': 'target', 'target_name': t.name, 'ra': t.ra, 'dec': t.dec})
+
+    def test_submit_upstream_alert_no_topic(self):
+        """Test that submission with no topic succeeds, using the default topic."""
+        t = Target.objects.create(name='test name', ra=1, dec=2)
+        with patch('tom_scimma.scimma.Stream.open', mock_open(read_data='data')) as mock_stream:
+            SCIMMABroker().submit_upstream_alert(target=t, observation_record=None)
+            mock_stream.assert_called_once_with(f'kafka://test_url:9092/default', 'w')
+            mock_stream().write.assert_called_with({'type': 'target', 'target_name': t.name, 'ra': t.ra, 'dec': t.dec})
+
+    @override_settings(BROKERS={'SCIMMA': {'api_key': '', 'hopskotch_username': '', 'hopskotch_password': '',
+                                           'hopskotch_url': 'test_url', 'default_hopskotch_topic': ''}
+                                })
     @patch('tom_scimma.scimma.Stream')
-    def test_submit_upstream_alert_no_topic(self, mock_stream):
+    def test_submit_upstream_alert_no_default_topic(self, mock_stream):
+        """Test that submission with no topic and no default topic fails."""
         with self.assertRaises(AlertSubmissionException):
             SCIMMABroker().submit_upstream_alert(target=None, observation_record=None)
 
-    @patch('tom_scimma.scimma.Stream')
-    def test_submit_upstream_alert_no_default_topic(self, mock_stream):
-        t = Target.objects.create(name='test name', ra=1, dec=2)
-        with patch('mock_stream.open', mock_open(stream_data='data')) as mock_stream:
-            SCIMMABroker().submit_upstream_alert(target=t, observation_record=None)
-            mock_stream
-
-    def test_submit_upstream_alert_with_topic(self):
-        pass
-
     def test_submit_upstream_alert_failure(self):
-        pass
+        """Test that a KafkaException results in an AlertSubmissionException."""
+        t = Target.objects.create(name='test name', ra=1, dec=2)
+        with patch('tom_scimma.scimma.Stream.open', mock_open(read_data='data')) as mock_stream:
+            mock_stream().write.side_effect = KafkaException()
+            with self.assertRaises(AlertSubmissionException):
+                SCIMMABroker().submit_upstream_alert(target=t, observation_record=None)
