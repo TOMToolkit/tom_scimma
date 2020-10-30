@@ -37,5 +37,6 @@ jobs:
     language: shell
     before_install: pip3 install -U pip
   - stage: Canary Test
-    if: $TRAVIS_EVENT_TYPE == "cron"
+    python: '3.8'
+    if: $TRAVIS_EVENT_TYPE = "cron"
     script: python tom_scimma/tests/run_canary_tests.py
