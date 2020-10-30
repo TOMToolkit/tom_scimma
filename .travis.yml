@@ -23,7 +23,7 @@ after_success: coveralls
 stages:
 - Style Checks
 - test
-- Canary test
+- canary
 
 jobs:
   include:
@@ -36,7 +36,7 @@ jobs:
     os: osx
     language: shell
     before_install: pip3 install -U pip
-  - stage: Canary Test
+  - stage: canary
     python: '3.8'
     if: env(TRAVIS_EVENT_TYPE) = "cron"
     script: python tom_scimma/tests/run_canary_tests.py
