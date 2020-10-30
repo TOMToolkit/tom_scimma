@@ -132,7 +132,7 @@ class TestSCIMMABrokerClass(TestCase):
         t = Target.objects.create(name='test name', ra=1, dec=2)
         with patch('tom_scimma.scimma.Stream.open', mock_open(read_data='data')) as mock_stream:
             SCIMMABroker().submit_upstream_alert(target=t, observation_record=None, topic='test')
-            mock_stream.assert_called_once_with(f'kafka://test_url:9092/test', 'w')
+            mock_stream.assert_called_once_with('kafka://test_url:9092/test', 'w')
             mock_stream().write.assert_called_with({'type': 'target', 'target_name': t.name, 'ra': t.ra, 'dec': t.dec})
 
     def test_submit_upstream_alert_no_topic(self):
@@ -140,7 +140,7 @@ class TestSCIMMABrokerClass(TestCase):
         t = Target.objects.create(name='test name', ra=1, dec=2)
         with patch('tom_scimma.scimma.Stream.open', mock_open(read_data='data')) as mock_stream:
             SCIMMABroker().submit_upstream_alert(target=t, observation_record=None)
-            mock_stream.assert_called_once_with(f'kafka://test_url:9092/default', 'w')
+            mock_stream.assert_called_once_with('kafka://test_url:9092/default', 'w')
             mock_stream().write.assert_called_with({'type': 'target', 'target_name': t.name, 'ra': t.ra, 'dec': t.dec})
 
     @override_settings(BROKERS={'SCIMMA': {'api_key': '', 'hopskotch_username': '', 'hopskotch_password': '',
