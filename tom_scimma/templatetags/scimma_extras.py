@@ -1,11 +1,13 @@
 from django import template
 
+from tom_scimma.scimma import SCIMMAUpstreamSubmissionForm
+
 
 register = template.Library()
 
 
-@register.inclusion_tag('tom_scimma/partials/submit_upstream_scimma_button.html')
-def submit_upstream_scimma_button(target=None, observation_record=None, topic=None, redirect_url=None):
+@register.inclusion_tag('tom_scimma/partials/submit_upstream_scimma_form.html')
+def submit_upstream_scimma_form(target=None, observation_record=None, redirect_url=None, topic=None):
     """
     Renders a button to submit an alert upstream to a broker. At least one of target/obs record should be given.
 
@@ -24,9 +26,14 @@ def submit_upstream_scimma_button(target=None, observation_record=None, topic=No
     :param redirect_url:
     :type redirect_url: str
     """
-    return {
+
+    form = SCIMMAUpstreamSubmissionForm(broker='SCIMMA', initial={
         'target': target,
         'observation_record': observation_record,
-        'topic': topic,
-        'redirect_url': redirect_url
+        'redirect_url': redirect_url,
+        'topic': topic
+    })
+
+    return {
+        'submit_upstream_form': form
     }

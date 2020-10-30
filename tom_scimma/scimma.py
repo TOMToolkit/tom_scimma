@@ -7,7 +7,7 @@ from django.conf import settings
 from hop import Stream
 from hop.auth import Auth
 
-from tom_alerts.alerts import GenericQueryForm, GenericAlert, GenericBroker
+from tom_alerts.alerts import GenericAlert, GenericBroker, GenericQueryForm, GenericUpstreamSubmissionForm
 from tom_alerts.exceptions import AlertSubmissionException
 from tom_targets.models import Target
 
@@ -72,6 +72,10 @@ class SCIMMABrokerForm(GenericQueryForm):
         return cleaned_data
 
 
+class SCIMMAUpstreamSubmissionForm(GenericUpstreamSubmissionForm):
+    topic = forms.CharField(required=False, max_length=100, widget=forms.HiddenInput())
+
+
 class SCIMMABroker(GenericBroker):
     """
     This is a prototype interface to the skip db built by SCIMMA
@@ -79,6 +83,7 @@ class SCIMMABroker(GenericBroker):
 
     name = 'SCIMMA'
     form = SCIMMABrokerForm
+    alert_submission_form = SCIMMAUpstreamSubmissionForm
 
     def fetch_alerts(self, parameters):
         parameters['page_size'] = 20
@@ -151,12 +156,10 @@ class SCIMMABroker(GenericBroker):
                                       settings
         # TODO: write tests for this
         """
-        super().submit_upstream_alert(target=target, observation_record=observation_record, **kwargs)
-
         creds = settings.BROKERS['SCIMMA']
         stream = Stream(auth=Auth(creds['hopskotch_username'], creds['hopskotch_password']))
         stream_url = creds['hopskotch_url']
-        topic = kwargs.pop('topic', creds['default_hopskotch_topic'])
+        topic = kwargs.get('topic') if kwargs.get('topic') != '' else creds['default_hopskotch_topic']
 
         if not topic:
             raise AlertSubmissionException(f'Topic must be provided to submit alert to {self.name}')

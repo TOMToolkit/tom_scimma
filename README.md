@@ -73,13 +73,13 @@ Then, add `scimma_extras` to the `{% load ... %}` statement of your desired temp
 Finally, add your desired templatetag where you would like it in your template:
 
 ```
-    {% submit_upstream_to_scimma target observation_record topic_name redirect_url %}
+    {% submit_upstream_scimma_form target observation_record redirect_url topic_name %}
 ```
 
 The signature and docstring of the `submit_upstream_to_scimma` button are as follows:
 
     ```
-    def submit_upstream_scimma_button(target=None, observation_record=None, topic=None, redirect_url=None):
+    def submit_upstream_scimma_form(target=None, observation_record=None, redirect_url=None, topic=None):
         """
         Renders a button to submit an alert upstream to a broker. At least one of target/obs record should be given.
 
