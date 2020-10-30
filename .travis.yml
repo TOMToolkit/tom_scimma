@@ -32,5 +32,5 @@ jobs:
     script: flake8 tom_* --max-line-length=120
   - stage: Canary Tests
     python: '3.8'
-    if: env(TRAVIS_EVENT_TYPE) == cron
+    if: env(TRAVIS_EVENT_TYPE) = cron
     script: python tom_scimma/tests/run_canary_tests.py
