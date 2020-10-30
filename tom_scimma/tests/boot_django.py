@@ -39,8 +39,8 @@ def boot_django():
                 'url': 'http://skip.dev.hop.scimma.org',
                 'api_key': '',
                 'hopskotch_url': 'dev.hop.scimma.org',
-                'hopskotch_username': '',
-                'hopskotch_password': '',
+                'hopskotch_username': os.getenv('HOPSKOTCH_USERNAME', ''),
+                'hopskotch_password': os.getenv('HOPSKOTCH_PASSWORD', ''),
                 'default_hopskotch_topic': ''
             }
         }
