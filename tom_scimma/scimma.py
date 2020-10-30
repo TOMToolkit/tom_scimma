@@ -1,5 +1,6 @@
 import requests
 
+from confluent_kafka import KafkaException
 from crispy_forms.layout import Column, Div, Fieldset, HTML, Layout, Row
 from django import forms
 from django.conf import settings
@@ -82,14 +83,14 @@ class SCIMMABroker(GenericBroker):
         parameters['page_size'] = 20
         response = requests.get(f'{SCIMMA_API_URL}/alerts/',
                                 params={**parameters},
-                                headers=settings.BROKER_CREDENTIALS['SCIMMA'])
+                                headers=settings.BROKERS['SCIMMA'])
         response.raise_for_status()
         result = response.json()
         return iter(result['results'])
 
     def fetch_alert(self, alert_id):
         url = f'{SCIMMA_API_URL}/alerts/{alert_id}'
-        response = requests.get(url, headers=settings.BROKER_CREDENTIALS['SCIMMA'])
+        response = requests.get(url, headers=settings.BROKERS['SCIMMA'])
         response.raise_for_status()
         parsed = response.json()
         return parsed
@@ -149,7 +150,7 @@ class SCIMMABroker(GenericBroker):
                                       settings
         # TODO: write tests for this
         """
-        super().submit_upstream_alert(target=target, observation_record=observation_record)
+        super().submit_upstream_alert(target=target, observation_record=observation_record, **kwargs)
 
         creds = settings.BROKERS['SCIMMA']
         stream = Stream(auth=Auth(creds['hopskotch_username'], creds['hopskotch_password']))
@@ -159,14 +160,19 @@ class SCIMMABroker(GenericBroker):
         if not topic:
             raise AlertSubmissionException(f'Topic must be provided to submit alert to {self.name}')
         
-        with stream.open(f'{stream_url}:9092/{topic}', 'w') as s:
-            if target:
-                message = {'type': 'target', 'name': obj.name, 'ra': obj.ra, 'dec': obj.dec}
-                s.write(message)
-            if observation_record:
-                message = {'type': 'observation', 'status': obj.status, 'parameters': obj.parameters_as_dict,
-                           'target': obj.target.name, 'ra': obj.target.ra, 'dec': obj.target.dec,
-                           'facility': obj.facility}
-                s.write(message)
+        try:
+            with stream.open(f'kafka://{stream_url}:9092/{topic}', 'w') as s:
+                if target:
+                    message = {'type': 'target', 'target_name': target.name, 'ra': target.ra, 'dec': target.dec}
+                    s.write(message)
+                if observation_record:
+                    message = {'type': 'observation', 'status': observation_record.status,
+                               'parameters': observation_record.parameters_as_dict,
+                               'target_name': observation_record.target.name,
+                               'ra': observation_record.target.ra, 'dec': observation_record.target.dec,
+                               'facility': observation_record.facility}
+                    s.write(message)
+        except KafkaException as e:
+            raise AlertSubmissionException(f'Submission to Hopskotch failed: {e}')
         
         return True

@@ -26,7 +26,7 @@ credentials to your project's `settings.py`:
         'SCIMMA': {
             'url': 'http://skip.dev.hop.scimma.org',
             'api_key': os.getenv('SKIP_API_KEY', ''),
-            'hopskotch_url': os.getenv('HOPSKOTCH_URL', ''),
+            'hopskotch_url': 'dev.hop.scimma.org',
             'hopskotch_username': os.getenv('HOPSKOTCH_USERNAME', ''),
             'hopskotch_password': os.getenv('HOPSKOTCH_PASSWORD', ''),
             'default_hopskotch_topic': ''

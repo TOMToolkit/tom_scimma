@@ -23,13 +23,26 @@ def boot_django():
             }
         },
         INSTALLED_APPS=(
+            'django.contrib.auth',
+            'django.contrib.contenttypes',
             'django_extensions',
             'tom_targets',
+            'tom_observations',
             'tom_alerts',
             APP_NAME,  # defined above
         ),
         EXTRA_FIELDS={},
         TIME_ZONE='UTC',
         USE_TZ=True,
+        BROKERS={
+            'SCIMMA': {
+                'url': 'http://skip.dev.hop.scimma.org',
+                'api_key': '',
+                'hopskotch_url': 'dev.hop.scimma.org',
+                'hopskotch_username': '',
+                'hopskotch_password': '',
+                'default_hopskotch_topic': ''
+            }
+        }
     )
     django.setup()

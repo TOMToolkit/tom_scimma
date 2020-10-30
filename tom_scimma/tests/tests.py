@@ -2,13 +2,14 @@ from datetime import datetime, timezone
 from itertools import repeat
 import json
 from requests import Response
+from unittest.mock import mock_open, patch
 
 from django.conf import settings
 from django.core.exceptions import NON_FIELD_ERRORS
-from django.test import TestCase, override_settings
+from django.test import override_settings, tag, TestCase
 import factory
-from unittest.mock import patch
 
+from tom_alerts.exceptions import AlertSubmissionException
 from tom_scimma.scimma import SCIMMABrokerForm, SCIMMABroker
 from tom_scimma.tests.utils import create_test_alert
 from tom_targets.models import Target, TargetName
@@ -48,7 +49,9 @@ class TestSCIMMABrokerForm(TestCase):
         self.assertIn('Topic filter cannot be used with LVC Trigger Number filter.', form.non_field_errors())
 
 
-@override_settings(BROKER_CREDENTIALS={'SCIMMA': {'api_key': ''}})
+@override_settings(BROKERS={'SCIMMA': {'api_key': '', 'hopskotch_username': '', 'hopskotch_password': '',
+                                       'hopskotch_url': '', 'default_hopskotch_topic': ''}
+                            })
 class TestSCIMMABrokerClass(TestCase):
     """
     NOTE: To run these tests in your venv: python ./tom_scimma/tests/run_tests.py
@@ -126,3 +129,21 @@ class TestSCIMMABrokerClass(TestCase):
 
         self.assertIsInstance(target, Target)
         self.assertEqual(target.galactic_lat, -45.74)
+
+    @patch('tom_scimma.scimma.Stream')
+    def test_submit_upstream_alert_no_topic(self, mock_stream):
+        with self.assertRaises(AlertSubmissionException):
+            SCIMMABroker().submit_upstream_alert(target=None, observation_record=None)
+
+    @patch('tom_scimma.scimma.Stream')
+    def test_submit_upstream_alert_no_default_topic(self, mock_stream):
+        t = Target.objects.create(name='test name', ra=1, dec=2)
+        with patch('mock_stream.open', mock_open(stream_data='data')) as mock_stream:
+            SCIMMABroker().submit_upstream_alert(target=t, observation_record=None)
+            mock_stream
+
+    def test_submit_upstream_alert_with_topic(self):
+        pass
+
+    def test_submit_upstream_alert_failure(self):
+        pass

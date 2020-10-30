@@ -7,7 +7,8 @@ from boot_django import boot_django, APP_NAME  # noqa
 
 boot_django()
 print(f'running test for {APP_NAME}')
-call_command('test', APP_NAME, verbosity=2)
+# call_command('test', APP_NAME, '--exclude-tag=canary', verbosity=2)
+call_command('test', APP_NAME, '--tag=canary', verbosity=2)
 
 # TODO: consider collecting switches and arguments
 #  from the command line (like -v or a specific test module
