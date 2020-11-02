@@ -8,29 +8,29 @@ dist: bionic
 cache: pip
 
 before_install:
-      - sudo apt-get install -y gfortran
-      - pip uninstall -y numpy
+- sudo apt-get install -y gfortran
+- pip uninstall -y numpy
 install: pip install -r requirements.txt coverage coveralls
 script: coverage run --include=tom_scimma/scimma.py tom_scimma/tests/run_tests.py
 after_success: coveralls
 
 env:
   global:
-  - secure: tRZb1ut4FotbmpUDXWZxN6ehTvF2azB3s7GIevyxTCbfk7iKNk46LQqixU3nalLL3/0KGKyJvwwEnf69oXxn9As9iwkJ/8rqoMlQrTCVijuE9CslVTa8bCxu2EIo6EuDoN9eV/ENefttB5Ra4EldHb1t87Wh2s0nvWsubJVqo8mCQGzu6Z3TTrC3cIyR8IC06jMX/B2upNcS/wziDvYROTUGoe3uf+AvmQC1rHXDL4y1AqTzD4eH4RoLQjc0/4oN4+3ueks8KLOuW+NBi5fyCzXcisn6rhzMT40hz4lc8w/2EqCUOcKFeP9v/cJsyqCGtHiowijN3F2f7ups8P9M0N1Hp7uJGynq+srRJQs7DbeTfWhLbld2J8YwUZJDBBj8xhH4r1+rGQZISgOv4BV+Hufq62S2mvBMAR/A5M4XfW/z1Lqv4joB8C+fQ+Ri9dlmQUBPKkBaHJyXt50/7vumzLOXXoQqARkKoXwkJD8A/P/8+X8PJrLcX8U8gmBcMqnc7Xn5098sqhlss4lQcNanvVsiH2lSJIlSXSwzsDoH3YJ7O+0NihljyJb57Cx4c6JZwa/G33haVz9paIIJxFUi9u3EVeAFMGJRw3K7+5WD+t2L3DY2AknnZ2SJYCyQKZXHsL6oZ3jG/ENbfEV7KuQUlG3l42aUcMsSZysA5/7U0FM=
-  - secure: TZrM8ONuxv1XiAQFitBJL8G5TJ5ZjSyU1yTewtkifamLC24M56RaXExQZHylNujBWgo3zuaVzhZ99QR0bEk4eGl/fSJe6+a0pkaWWeE/3wuuln+dyMU81US4rmVmDdAQoPE2yXzPT3WaGcR7cii9ZQ96Zac0GayZZS7nU9Us8xXJ5/Efob2aPF8Xf+aO39Nqcp/+QG9C09z/kHnnzq7zf3wZtYihlhecSlK7EvvJK+HgudJU+qIv7r19x1yh3dCs0iMuDl2d3Y5PV4jM0YMlDg06BtWqST59W7wrd60ZJLmjj6vmLvJv1Zb2gPaPZIv4gfT5SF4cloWDeZ6tJ3kXmaRd2hCqjnjjQsWONB6wuQVexGbdMUVKAtdX+Iej5FcKLYmVtF1txmeh5M//BYcHxGxbYaL8apN+oqnMICgclHh2NYW8jDq2Y+bSUrRC0IYHz8ncYNWKjeu16WODx81UyYNwEL9bPFOjjirBGBbHSM7r5a4LvkYM7mvVftXS8dcAERz8Zkbq4i//b8CG2QTh7DaGtRPIpD1nrCPV5Ev8GFDLAmkKaCQ0MWjHKgCsPnly9M5NL23QaowVyjHKx+QlXP2SxcVjFIbL3Tz6DqJl+cvliGl1ELTz8mMqTL46mo/bkKj1EEuggtDg3jowDUubp8BHt8Bh9V/PL2Gnx0R/Rxc=
+  - secure: Kentw8j/62YQcEQgi39VLT25d8kKGRHRqQczjrCpKsvD0Q/5e3HU95KsM5mqgaExeQkq01bqJaB83mC7CYtOk82HMD+Bo9j1+ZJ9cyNKM3t05gQrsG25JmIvj+uKSvt8CWoi9VYhWXAvqjZ2fSA7w+GBoP4hgq5HzrclmEHebsvcfRtXI1V9vCUEYesVNd31WHX4pJpHZ5SuU39l2ewKWiStN6JLb4HGhryATCgBSEpOKNhhanVWT/8HsGobe2oBQLUCesCYvIChwr1uvI9OX3DtR74IPp07okT37EjtXXjPZQkL8VH2E/+v1IxHSsWLtvAPvkZjoVKMxi2Z+yJ83+i7aiJJtXsz5IFFBqypO0k4a7LX48xjuHskRcJIAtZkr1BhLsjkd0mXXXt68iXP8r3ybIPcGO39avUd5Dmedneiqv2rNX6nM+J36Eol8dj7FprK4cwPgdLqr3hjWtK1SOcts2OpoT2LQZ45csmsa0NOrHHvCNLQgxzXa/LJLjOqnZpKgOSZQyR2wh/yOBHDJQDwqoMTOL80kWDdZ5I6cs6hE0xM36s0mCFQCbyEv+6ws1gvdqayB6I3OroHKvlZ7Z+gatVto1XaUHa8ZRq8gACf6BjnyigfbyYXZR+x3MbpXXqKv+rd4v5IitppH/wlXrQj4UL8NGMYMb01iX5qZWs=
+  - secure: ltMhFZUvhBFBn/1DW8vOlL/E+jzfq2LB7RR91ITwPP82l83uhRDeXx/5/DORbVX8VdjaoBF35y8sZLnDpE3MaN/AA40HZjHj/YsUos2BBEOTOhuc38bDsiYmFQopwNjBAmrgZ/nzhBjR4FKcfTzCAjrI0x9H3e6D0VYcIDfev/NQvRTK0wSvy1Ggldwx4rC/2Ise2rfOFvnPZjAsKRw93Yw9SNunlG6qXEc4l6K15/8tBT472kSCn8/0Ft11sDDagwcCLKbmrNvJ3wHJTy8rHITm/pqd3MU0mB12eS909frdn/bWqexg6ACMGVCUIWDUrrfm9NTvli3tFdDA4RHLM7LUU8h0hjqP26R6cYrI/vovUAg8CzoPt6WJyzREmQLIjOZa8+Dajr4vQnwfMOa5w5WkhrT3uqKn2VOxC3RAP5vWI4BrhlpEkRLO7k3g/uGMc5PnvRaLQAz14SN7nwGOI/TWxcmd9GcJvnp5LM/OsCOqoB4/8WJ1Ahj7g3rSEVyNRZa3lALg432yB6YcBBv5KPuhTUt5X0vH5kjD7mj7kY33HBSi1xuXZnwHcOUBME5VfhTCjT9stdZzjFpS78E1THIfXKpwCtkat3p4+cCW9obVrpCX4ZBurB8EuqHp6HS7dwjO+geDIXwBpqqKbavNvcLB+MqPNa0NrUdVN9zn4Ao=
 
 stages:
-- "Style Checks"
-- "test"
-- "Canary Tests"
+- Style Checks
+- test
+- Canary Tests
 
 jobs:
   include:
-  - stage: "Style Checks"
+  - stage: Style Checks
     if: type != cron
     install: pip install -I flake8
     script: flake8 tom_* --max-line-length=120
-  - stage: "Canary Tests"
+  - stage: Canary Tests
     python: '3.8'
     if: type = cron
     script: python tom_scimma/tests/run_canary_tests.py
