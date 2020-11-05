@@ -1,7 +1,6 @@
 # tom_scimma
 This module adds [Hopskotch](https://scimma.org/projects.html) and [Skip](http://skip.dev.hop.scimma.org/api/)
-support to the TOM Toolkit. Using this module, TOMs can query alerts submitted to the Hopskotch stream, and publish
-alerts to Hopskotch.
+support to the TOM Toolkit. Using this module, TOMs can query alerts submitted to the Hopskotch stream, and publish alerts to Hopskotch.
 
 ## Installation
 
