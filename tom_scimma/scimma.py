@@ -192,7 +192,8 @@ class SCIMMABroker(GenericBroker):
                 'dec': alert['declination_sexagesimal'],
                 'event_trig_num': alert['message']['event_trig_num'],
                 'rank': alert['message']['rank'],
-                'comments': alert['extracted_fields']['comment_warnings']
+                'comments': alert['extracted_fields']['comment_warnings'],
+                'alert': alert
             })
         return flattened_alerts
 
