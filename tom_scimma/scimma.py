@@ -197,7 +197,7 @@ class SCIMMABroker(GenericBroker):
         return flattened_alerts
 
     def filter_alerts(self, filters):
-        parameters = {'topic': 3}
+        parameters = {'topic': 3}  # LVC counterpart topic
 
         parameters['event_trigger_number'] = filters['event_trig_num']['value'] if 'event_trig_num' in filters else ''
         parameters['keyword'] = filters['comments']['value'] if 'comments' in filters else ''
