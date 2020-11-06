@@ -15,15 +15,9 @@ SCIMMA_URL = 'http://skip.dev.hop.scimma.org'
 SCIMMA_API_URL = f'{SCIMMA_URL}/api'
 
 
-def get_topic_choices():
-    response = requests.get(f'{SCIMMA_API_URL}/topics')
-    response.raise_for_status()
-    return [(result['id'], result['name']) for result in response.json()['results']]
-
-
 class SCIMMABrokerForm(GenericQueryForm):
     keyword = forms.CharField(required=False, label='Keyword search')
-    topic = forms.MultipleChoiceField(choices=get_topic_choices, required=False, label='Topic')
+    topic = forms.MultipleChoiceField(choices=[], required=False, label='Topic')
     cone_search = forms.CharField(required=False, label='Cone Search', help_text='RA, Dec, radius in degrees')
     polygon_search = forms.CharField(required=False, label='Polygon Search',
                                      help_text='Comma-separated pairs of space-delimited coordinates (degrees)')
@@ -33,6 +27,9 @@ class SCIMMABrokerForm(GenericQueryForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.fields['topic'].choices = self.get_topic_choices()
+
         self.helper.layout = Layout(
             self.common_layout,
             Fieldset(
@@ -70,6 +67,12 @@ class SCIMMABrokerForm(GenericQueryForm):
         if cleaned_data.get('event_trigger_number') and cleaned_data.get('topic'):
             raise forms.ValidationError('Topic filter cannot be used with LVC Trigger Number filter.')
         return cleaned_data
+
+    @staticmethod
+    def get_topic_choices():
+        response = requests.get(f'{SCIMMA_API_URL}/topics')
+        response.raise_for_status()
+        return [(result['id'], result['name']) for result in response.json()['results']]
 
 
 class SCIMMAUpstreamSubmissionForm(GenericUpstreamSubmissionForm):
@@ -154,7 +157,6 @@ class SCIMMABroker(GenericBroker):
         :raises:
             AlertSubmissionException: If topic is not provided to the function and a default is not provided in
                                       settings
-        # TODO: write tests for this
         """
         creds = settings.BROKERS['SCIMMA']
         stream = Stream(auth=Auth(creds['hopskotch_username'], creds['hopskotch_password']))
@@ -180,3 +182,41 @@ class SCIMMABroker(GenericBroker):
             raise AlertSubmissionException(f'Submission to Hopskotch failed: {e}')
 
         return True
+
+    def flatten_dash_alerts(self, alerts):
+        flattened_alerts = []
+        for alert in alerts:
+            flattened_alerts.append({
+                'counterpart_identifier': alert['extracted_fields']['counterpart_identifier'],
+                'ra': alert['right_ascension_sexagesimal'],
+                'dec': alert['declination_sexagesimal'],
+                'event_trig_num': alert['message']['event_trig_num'],
+                'rank': alert['message']['rank'],
+                'comments': alert['extracted_fields']['comment_warnings']
+            })
+        return flattened_alerts
+
+    def filter_alerts(self, filters):
+        parameters = {'topic': 3}
+
+        parameters['event_trigger_number'] = filters['event_trig_num']['value'] if 'event_trig_num' in filters else ''
+        parameters['keyword'] = filters['comments']['value'] if 'comments' in filters else ''
+        if all(k in filters for k in ['ra', 'dec']):
+            parameters['cone_search'] = f'{filters["ra"]["value"]},{filters["dec"]["value"]},20'
+        # TODO: implement searching by rank and counterpart identifier
+
+        return self.fetch_alerts(parameters)
+
+    def get_dash_columns(self):
+        return [
+            {'id': 'counterpart_identifier', 'name': 'Counterpart Identifier', 'type': 'text'},
+            {'id': 'ra', 'name': 'Right Ascension', 'type': 'text'},
+            {'id': 'dec', 'name': 'Declination', 'type': 'text'},
+            {'id': 'event_trig_num', 'name': 'Event Trigger Number', 'type': 'text'},
+            {'id': 'rank', 'name': 'Rank', 'type': 'text'},
+            {'id': 'comments', 'name': 'Comments', 'type': 'text'}
+        ]
+
+    def get_dash_data(self, parameters):
+        alerts = self.filter_alerts(parameters)
+        return self.flatten_dash_alerts(alerts)
