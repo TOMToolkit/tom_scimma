@@ -199,11 +199,12 @@ class SCIMMABroker(GenericBroker):
 
     def filter_alerts(self, filters):
         parameters = {'topic': 3}  # LVC counterpart topic
+        parameters['page'] = filters.get('page_num', 0) + 1  # Dash pages are 0-indexed, SCIMMA is 1-indexed
 
         parameters['event_trigger_number'] = filters['event_trig_num']['value'] if 'event_trig_num' in filters else ''
         parameters['keyword'] = filters['comments']['value'] if 'comments' in filters else ''
         if all(k in filters for k in ['ra', 'dec']):
-            parameters['cone_search'] = f'{filters["ra"]["value"]},{filters["dec"]["value"]},20'
+            parameters['cone_search'] = f'{filters["ra"]["value"]},{filters["dec"]["value"]},1'
         # TODO: implement searching by rank and counterpart identifier
 
         return self.fetch_alerts(parameters)
