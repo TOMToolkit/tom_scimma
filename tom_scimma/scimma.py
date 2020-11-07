@@ -130,7 +130,7 @@ class SCIMMABroker(GenericBroker):
             name=alert['alert_identifier'],
             type='SIDEREAL',
             ra=alert['right_ascension'],
-            dec=alert['right_ascension'],
+            dec=alert['declination'],
             galactic_lng=gal_coords[0],
             galactic_lat=gal_coords[1],
         )
