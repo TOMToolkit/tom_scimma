@@ -102,6 +102,8 @@ class TestSCIMMABrokerClass(TestCase):
 
         self.assertIsInstance(target, Target)
         self.assertEqual(target.galactic_lat, None)
+        self.assertEqual(target.ra, self.alerts[0]['right_ascension'])
+        self.assertEqual(target.dec, self.alerts[0]['declination'])
 
     def test_to_target_lvc_topic(self):
         """
@@ -116,6 +118,8 @@ class TestSCIMMABrokerClass(TestCase):
 
         self.assertIsInstance(target, Target)
         self.assertEqual(target.galactic_lat, -45.74)
+        self.assertEqual(target.ra, self.alerts[0]['right_ascension'])
+        self.assertEqual(target.dec, self.alerts[0]['declination'])
 
     def test_submit_upstream_alert_with_topic(self):
         """Test that successful submission uses the provided topic."""
