@@ -11,6 +11,7 @@ from tom_alerts.alerts import GenericAlert, GenericBroker, GenericQueryForm, Gen
 from tom_alerts.exceptions import AlertSubmissionException
 from tom_targets.models import Target
 
+GRACE_DB_URL = 'https://gracedb.ligo.org'
 SCIMMA_URL = 'http://skip.dev.hop.scimma.org'
 SCIMMA_API_URL = f'{SCIMMA_URL}/api'
 
@@ -186,11 +187,12 @@ class SCIMMABroker(GenericBroker):
     def flatten_dash_alerts(self, alerts):
         flattened_alerts = []
         for alert in alerts:
+            url = f'{GRACE_DB_URL}/superevents/{alert["message"]["event_trig_num"]}/view/'
             flattened_alerts.append({
+                'alert_identifier': f'[{alert["alert_identifier"]}]({url})',
                 'counterpart_identifier': alert['extracted_fields']['counterpart_identifier'],
                 'ra': alert['right_ascension_sexagesimal'],
                 'dec': alert['declination_sexagesimal'],
-                'event_trig_num': alert['message']['event_trig_num'],
                 'rank': alert['message']['rank'],
                 'comments': alert['extracted_fields']['comment_warnings'],
                 'alert': alert
@@ -201,7 +203,7 @@ class SCIMMABroker(GenericBroker):
         parameters = {'topic': 3}  # LVC counterpart topic
         parameters['page'] = filters.get('page_num', 0) + 1  # Dash pages are 0-indexed, SCIMMA is 1-indexed
 
-        parameters['event_trigger_number'] = filters['event_trig_num']['value'] if 'event_trig_num' in filters else ''
+        parameters['event_trigger_number'] = filters['alert_identifier']['value'] if 'alert_identifier' in filters else ''
         parameters['keyword'] = filters['comments']['value'] if 'comments' in filters else ''
         if all(k in filters for k in ['ra', 'dec']):
             parameters['cone_search'] = f'{filters["ra"]["value"]},{filters["dec"]["value"]},1'
@@ -211,10 +213,10 @@ class SCIMMABroker(GenericBroker):
 
     def get_dash_columns(self):
         return [
+            {'id': 'alert_identifier', 'name': 'Alert Identifier', 'type': 'text', 'presentation': 'markdown'},
             {'id': 'counterpart_identifier', 'name': 'Counterpart Identifier', 'type': 'text'},
             {'id': 'ra', 'name': 'Right Ascension', 'type': 'text'},
             {'id': 'dec', 'name': 'Declination', 'type': 'text'},
-            {'id': 'event_trig_num', 'name': 'Event Trigger Number', 'type': 'text'},
             {'id': 'rank', 'name': 'Rank', 'type': 'text'},
             {'id': 'comments', 'name': 'Comments', 'type': 'text'}
         ]
