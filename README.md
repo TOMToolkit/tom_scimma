@@ -106,4 +106,4 @@ The signature and docstring of the `submit_upstream_to_scimma` button are as fol
 
 In order to run the tests, run the following in your virtualenv:
 
-`python tom_antares/tests/run_tests.py`
+`python tom_scimma/tests/run_tests.py`
