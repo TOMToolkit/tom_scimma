@@ -7,7 +7,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='tom-scimma',
-    version='1.0.0',
+    version='1.0.0a1',
     description='Skip/Hopskotch broker module for the TOM Toolkit',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -24,7 +24,7 @@ setup(
         'Topic :: Scientific/Engineering :: Astronomy',
         'Topic :: Scientific/Engineering :: Physics'
     ],
-    keywords=['tomtoolkit', 'astronomy', 'astrophysics', 'cosmology', 'science', 'fits', 'observatory', 'antares'],
+    keywords=['tomtoolkit', 'astronomy', 'astrophysics', 'cosmology', 'science', 'fits', 'observatory', 'scimma'],
     packages=find_packages(),
     install_requires=[
         'tomtoolkit==1.13.0a5',
