@@ -154,7 +154,6 @@ class SCIMMABroker(GenericBroker):
         :raises:
             AlertSubmissionException: If topic is not provided to the function and a default is not provided in
                                       settings
-        # TODO: write tests for this
         """
         creds = settings.BROKERS['SCIMMA']
         stream = Stream(auth=Auth(creds['hopskotch_username'], creds['hopskotch_password']))
