@@ -52,7 +52,7 @@ jobs:
         condition: $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+\-(alpha)\.[0-9]+$
       username: "__token__"
       password:
-         secure: "jRAxd9jrmLxvhJozZ7It82Q/XTlzgm9QilsVYCj/OnffaFJ+5LOkyZxdp6MsYwXQdkpbKnHiftRqa/FOR311GGNHAiijXNEHBZJ4Z+B6n5y5Le79R+XM47F4hs6sK2DXsFigowDNBvicFnvSn0e1TUVkIKl+lH5PFfWYpN2AKCfzIhholjsYTjrIeqz0zxCuomKZREbBnTVK4w2WTuPBs+FIZ5AWtMYIy16yRqwgGRl1PJBa+9fEY9UceuAlLC7Y/K47/Ij2lDX5n9pYKXn+GvEv398oSmSx8vJpjcyXViJOJlFOQZh8Cp+AcH+xliW8sOs05tQuiRM0cnI+XlpAdc84HjJUvPqVZ3fl15pL2tHKuG39NYsYAyUqbCmXzSKg9TUs1N4WXMHzgMdi404/qQJGUJ1NX8kGr5boUa/LiwaW8yehbx5d4gcrPjgfsB6pwNhAz9iELvNkOJx4dnpX3PzOkpKXVUFFUiMQH1nGVbjOFi/8Uy/I3avxuM4QBo1ZMk246s+DF7wo/pLJDmmIhmhXvdv//qrSEeVqRkTrApuyPvxzQbG8sYSDtqpxbm0+Oyv6RLJg8l29hHbwXL4xyH7iSpTCORtC3iHgtOS10cA2vj9pQ8bSmPhoK71LvC3hescSo7qsRvZAb4eRm0X0WUtxSgVSrFVOY2HcJrOj2JA="
+         secure: "kMmT6vvXOjtvb0xfc06qiWvU4ii8jx8YxHT4nlAZXgiWHFKfsZ8wgDDzFk6MJLDoTHdfMFddlEmH+DIitE7p13bQ/fQi/T7eacs6942LvO6nf3kyIYSpVw+MSQmiL43BKGm5ZjT8cCejHTJvMMFbvoAEkX/LHRD6JJIlXUNfZXKrLT9H1ssqe9IrbMMAUjZH3ytULT/5kbQSAZWjGqjbYrsjM3JgI3Bi55nWLARZJXhC7ArSeEdthbkbYxDc46EPDqFhbtR0jKNle5At873qAa9IE8mMWvLgMsmqMQ+G3gB0E+BRvxdXE4xxbyjwzNegnTI3PTy+cXA3PDY1UWfbM+VpMWbSH+2HxO86uN3xgsAJ08aVado5RxxaBcbWP/9kGm+P0RHeTlB37MULoMgkA6lKnD//nNW7M74vM9KJouV4qBDNo5vBgZ6GTVuGJkEzv4IGIHnNO2PnUS6I+RZs13Z258oRENy7bgJ4JVdP58GEKhkRpDYkl4n/BN1dCpGRWZquJbBbRKfKMy/Jm7waSc7rwE7AponOdkzjGqQ/eGXzTcrAcXCF8VwVp0M7/ezqWgaUo4dI1w/avVQrCt5xTdnQo1OT9UhpBOv9CF1fZf9Po90q7bvROPKkTVBoGSJIEhyIkAdZotDigBvMe+JJvb+WOmvdidqyNBR4sxiiCE4="
       distributions: "sdist bdist_wheel"
 
   - stage: "Deploy Dev"
@@ -90,7 +90,7 @@ jobs:
         condition: $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$
       username: "__token__"
       password:
-        secure: "jRAxd9jrmLxvhJozZ7It82Q/XTlzgm9QilsVYCj/OnffaFJ+5LOkyZxdp6MsYwXQdkpbKnHiftRqa/FOR311GGNHAiijXNEHBZJ4Z+B6n5y5Le79R+XM47F4hs6sK2DXsFigowDNBvicFnvSn0e1TUVkIKl+lH5PFfWYpN2AKCfzIhholjsYTjrIeqz0zxCuomKZREbBnTVK4w2WTuPBs+FIZ5AWtMYIy16yRqwgGRl1PJBa+9fEY9UceuAlLC7Y/K47/Ij2lDX5n9pYKXn+GvEv398oSmSx8vJpjcyXViJOJlFOQZh8Cp+AcH+xliW8sOs05tQuiRM0cnI+XlpAdc84HjJUvPqVZ3fl15pL2tHKuG39NYsYAyUqbCmXzSKg9TUs1N4WXMHzgMdi404/qQJGUJ1NX8kGr5boUa/LiwaW8yehbx5d4gcrPjgfsB6pwNhAz9iELvNkOJx4dnpX3PzOkpKXVUFFUiMQH1nGVbjOFi/8Uy/I3avxuM4QBo1ZMk246s+DF7wo/pLJDmmIhmhXvdv//qrSEeVqRkTrApuyPvxzQbG8sYSDtqpxbm0+Oyv6RLJg8l29hHbwXL4xyH7iSpTCORtC3iHgtOS10cA2vj9pQ8bSmPhoK71LvC3hescSo7qsRvZAb4eRm0X0WUtxSgVSrFVOY2HcJrOj2JA="
+        secure: "kMmT6vvXOjtvb0xfc06qiWvU4ii8jx8YxHT4nlAZXgiWHFKfsZ8wgDDzFk6MJLDoTHdfMFddlEmH+DIitE7p13bQ/fQi/T7eacs6942LvO6nf3kyIYSpVw+MSQmiL43BKGm5ZjT8cCejHTJvMMFbvoAEkX/LHRD6JJIlXUNfZXKrLT9H1ssqe9IrbMMAUjZH3ytULT/5kbQSAZWjGqjbYrsjM3JgI3Bi55nWLARZJXhC7ArSeEdthbkbYxDc46EPDqFhbtR0jKNle5At873qAa9IE8mMWvLgMsmqMQ+G3gB0E+BRvxdXE4xxbyjwzNegnTI3PTy+cXA3PDY1UWfbM+VpMWbSH+2HxO86uN3xgsAJ08aVado5RxxaBcbWP/9kGm+P0RHeTlB37MULoMgkA6lKnD//nNW7M74vM9KJouV4qBDNo5vBgZ6GTVuGJkEzv4IGIHnNO2PnUS6I+RZs13Z258oRENy7bgJ4JVdP58GEKhkRpDYkl4n/BN1dCpGRWZquJbBbRKfKMy/Jm7waSc7rwE7AponOdkzjGqQ/eGXzTcrAcXCF8VwVp0M7/ezqWgaUo4dI1w/avVQrCt5xTdnQo1OT9UhpBOv9CF1fZf9Po90q7bvROPKkTVBoGSJIEhyIkAdZotDigBvMe+JJvb+WOmvdidqyNBR4sxiiCE4="
       distributions: "sdist bdist_wheel"
 
   - stage: Deploy Main
