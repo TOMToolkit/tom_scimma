@@ -11,7 +11,6 @@ from tom_alerts.alerts import GenericAlert, GenericBroker, GenericQueryForm, Gen
 from tom_alerts.exceptions import AlertSubmissionException
 from tom_targets.models import Target
 
-GRACE_DB_URL = 'https://gracedb.ligo.org'
 SCIMMA_URL = 'http://skip.dev.hop.scimma.org'
 SCIMMA_API_URL = f'{SCIMMA_URL}/api'
 
