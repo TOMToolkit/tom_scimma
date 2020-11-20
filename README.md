@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/TOMToolkit/tom_scimma/badge.svg?branch=main)](https://coveralls.io/github/TOMToolkit/tom_scimma?branch=main)
+
 # tom_scimma
 This module adds [Hopskotch](https://scimma.org/projects.html) and [Skip](http://skip.dev.hop.scimma.org/api/)
 support to the TOM Toolkit. Using this module, TOMs can query alerts submitted to the Hopskotch stream, and publish alerts to Hopskotch.
@@ -103,4 +105,4 @@ The signature and docstring of the `submit_upstream_to_scimma` button are as fol
 
 In order to run the tests, run the following in your virtualenv:
 
-`python tom_antares/tests/run_tests.py`
+`python tom_scimma/tests/run_tests.py`
