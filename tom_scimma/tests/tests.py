@@ -38,9 +38,9 @@ class TestSCIMMAQueryForm(TestCase):
         mock_requests_get.return_value = self.mock_response
 
         form = SCIMMAQueryForm({'query_name': 'Test SCIMMA Query',
-                                 'broker': 'SCIMMA',
-                                 'topic': [1],
-                                 'event_trigger_number': 'S190426'})
+                                'broker': 'SCIMMA',
+                                'topic': [1],
+                                'event_trigger_number': 'S190426'})
         form.is_valid()
         self.assertTrue(form.has_error(NON_FIELD_ERRORS))
         self.assertIn('Topic filter cannot be used with LVC Trigger Number filter.', form.non_field_errors())
