@@ -15,7 +15,7 @@ SCIMMA_URL = 'http://skip.dev.hop.scimma.org'
 SCIMMA_API_URL = f'{SCIMMA_URL}/api'
 
 
-class SCIMMABrokerForm(GenericQueryForm):
+class SCIMMAQueryForm(GenericQueryForm):
     keyword = forms.CharField(required=False, label='Keyword search')
     topic = forms.MultipleChoiceField(choices=[], required=False, label='Topic')
     cone_search = forms.CharField(required=False, label='Cone Search', help_text='RA, Dec, radius in degrees')
@@ -85,16 +85,19 @@ class SCIMMABroker(GenericBroker):
     """
 
     name = 'SCIMMA'
-    form = SCIMMABrokerForm
+    form = SCIMMAQueryForm
     alert_submission_form = SCIMMAUpstreamSubmissionForm
 
-    def fetch_alerts(self, parameters):
-        parameters['page_size'] = 20
+    def _request_alerts(self, parameters):
         response = requests.get(f'{SCIMMA_API_URL}/alerts/',
                                 params={**parameters},
                                 headers=settings.BROKERS['SCIMMA'])
         response.raise_for_status()
-        result = response.json()
+        return response.json()
+
+    def fetch_alerts(self, parameters):
+        parameters['page_size'] = 20
+        result = self._request_alerts(parameters)
         return iter(result['results'])
 
     def fetch_alert(self, alert_id):
