@@ -91,9 +91,9 @@ class SCIMMABroker(GenericBroker):
     def _request_alerts(self, parameters):
         response = requests.get(f'{SCIMMA_API_URL}/alerts/',
                                 params={**parameters},
-                                headers = settings.BROKERS['SCIMMA'])
+                                headers=settings.BROKERS['SCIMMA'])
         response.raise_for_status()
-        return response.json()    
+        return response.json()
 
     def fetch_alerts(self, parameters):
         parameters['page_size'] = 20
