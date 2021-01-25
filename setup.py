@@ -28,7 +28,7 @@ setup(
     use_scm_version=True,  # use_scm_version and setup_requires setuptools_scm are required for automated releases
     setup_requires=['setuptools_scm', 'wheel'],
     install_requires=[
-        'tomtoolkit==2.0.1',
+        'tomtoolkit==2.3.0',
         'hop-client~=0.2'
     ],
     extras_require={
