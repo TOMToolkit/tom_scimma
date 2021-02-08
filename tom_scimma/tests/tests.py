@@ -7,12 +7,12 @@ from django.core.exceptions import NON_FIELD_ERRORS
 from django.test import override_settings, TestCase
 
 from tom_alerts.exceptions import AlertSubmissionException
-from tom_scimma.scimma import SCIMMABrokerForm, SCIMMABroker
+from tom_scimma.scimma import SCIMMAQueryForm, SCIMMABroker
 from tom_scimma.tests.utils import create_test_alert
 from tom_targets.models import Target
 
 
-class TestSCIMMABrokerForm(TestCase):
+class TestSCIMMAQueryForm(TestCase):
     """
     NOTE: to run these tests in your venv: python ./tom_scimma/tests/run_tests.py
     """
@@ -37,10 +37,10 @@ class TestSCIMMABrokerForm(TestCase):
         """Test that an error is thrown when both Topic and LVC Trigger Number are included in form submission."""
         mock_requests_get.return_value = self.mock_response
 
-        form = SCIMMABrokerForm({'query_name': 'Test SCIMMA Query',
-                                 'broker': 'SCIMMA',
-                                 'topic': [1],
-                                 'event_trigger_number': 'S190426'})
+        form = SCIMMAQueryForm({'query_name': 'Test SCIMMA Query',
+                                'broker': 'SCIMMA',
+                                'topic': [1],
+                                'event_trigger_number': 'S190426'})
         form.is_valid()
         self.assertTrue(form.has_error(NON_FIELD_ERRORS))
         self.assertIn('Topic filter cannot be used with LVC Trigger Number filter.', form.non_field_errors())
