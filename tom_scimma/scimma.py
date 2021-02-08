@@ -173,7 +173,7 @@ class SCIMMABroker(GenericBroker):
                     s.write(message)
                 if observation_record:
                     message = {'type': 'observation', 'status': observation_record.status,
-                               'parameters': observation_record.parameters_as_dict,
+                               'parameters': observation_record.parameters,
                                'target_name': observation_record.target.name,
                                'ra': observation_record.target.ra, 'dec': observation_record.target.dec,
                                'facility': observation_record.facility}
