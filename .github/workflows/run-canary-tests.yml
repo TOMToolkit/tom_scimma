@@ -15,4 +15,7 @@ jobs:
         python -m pip install --upgrade pip setuptools wheel
         pip install -r requirements.txt
     - name: Run Canary Tests
+      env:
+        HOPSKOTCH_USERNAME: ${{ secrets.HOPSKOTCH_USERNAME }}
+        HOPSKOTCH_PASSWORD: ${{ secrets.HOPSKOTCH_PASSWORD }}
       run: python tom_scimma/tests/run_canary_tests.py
