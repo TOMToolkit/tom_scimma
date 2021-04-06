@@ -23,7 +23,7 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           pip install -e .[test]
       - name: Run tests
-        run: python tom_antares/tests/run_tests.py
+        run: python tom_scimma/tests/run_tests.py
 
   create_release:
     runs-on: ubuntu-latest

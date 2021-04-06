@@ -35,7 +35,7 @@ jobs:
           pip install -r requirements.txt coverage coveralls
           pip install -I flake8
       - name: Run Tests
-        run: python tom_antares/tests/run_tests.py
+        run: python tom_scimma/tests/run_tests.py
 
   publish_coverage:
     runs-on: ubuntu-latest
@@ -50,7 +50,7 @@ jobs:
           pip install -r requirements.txt coverage coveralls
           pip install -I flake8
       - name: Run Tests
-        run: coverage run --include=tom_antares/antares.py tom_antares/tests/run_tests.py
+        run: coverage run --include=tom_scimma/scimma.py tom_scimma/tests/run_tests.py
       - name: Report Coverage
         run: coveralls
         env:
