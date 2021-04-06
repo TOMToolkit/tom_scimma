@@ -1,3 +1,4 @@
+[![pypi](https://img.shields.io/pypi/v/tom-scimma.svg)](https://pypi.python.org/pypi/tom-scimma)
 [![run-tests](https://github.com/TOMToolkit/tom_scimma/actions/workflows/run-tests.yml/badge.svg)](https://github.com/TOMToolkit/tom_scimma/actions/workflows/run-tests.yml)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/2fb72a4120d8493bac9c25347ccf721d)](https://www.codacy.com/gh/TOMToolkit/tom_scimma/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=TOMToolkit/tom_scimma&amp;utm_campaign=Badge_Grade)
 [![Coverage Status](https://coveralls.io/repos/github/TOMToolkit/tom_scimma/badge.svg?branch=main)](https://coveralls.io/github/TOMToolkit/tom_scimma?branch=main)
