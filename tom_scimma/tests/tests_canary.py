@@ -37,6 +37,6 @@ class TestSCIMMAModuleCanary(TestCase):
     def test_submit_upstream_alert(self):
         """Test submit_upstream_alert"""
         t = Target.objects.create(name='canary test target', ra=1, dec=2)
-        response = self.broker.submit_upstream_alert(target=t, observation_record=None, topic='test')
+        response = self.broker.submit_upstream_alert(target=t, observation_record=None, topic='TOMToolkit.test')
 
         self.assertTrue(response)
