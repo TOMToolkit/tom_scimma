@@ -21,7 +21,7 @@ class TestSCIMMAQueryForm(TestCase):
             'count': 1,
             'results': [
                 {'id': 1, 'name': 'gcn'},
-                {'id': 2, 'name': 'lvc-counterpart'}
+                {'id': 2, 'name': 'lvc.lvc-counterpart'}
             ]
         }
         self.mock_response = Response()
@@ -84,7 +84,7 @@ class TestSCIMMABrokerClass(TestCase):
     def test_to_generic_alert_lvc_topic(self):
         """Test the to_generic_alert logic for lvc-counterpart alerts. Should result in the inclusion of score."""
         test_alert = self.alerts[0]
-        test_alert['topic'] = 'lvc-counterpart'
+        test_alert['topic'] = 'lvc.lvc-counterpart'
         test_alert['message'] = {'rank': '3'}
         generic_alert = SCIMMABroker().to_generic_alert(test_alert)
 
