@@ -108,7 +108,7 @@ class SCIMMABroker(GenericBroker):
         return parsed
 
     def to_generic_alert(self, alert):
-        score = alert['message'].get('rank', 0) if alert['topic'] == 'lvc-counterpart' else ''
+        score = alert['message'].get('rank', 0) if alert['topic'] == 'lvc.lvc-counterpart' else ''
         return GenericAlert(
             url=f'{SCIMMA_API_URL}/alerts/{alert["id"]}',
             id=alert['id'],
