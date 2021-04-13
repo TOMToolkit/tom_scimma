@@ -29,8 +29,8 @@ class TestSCIMMAModuleCanary(TestCase):
 
     def test_fetch_alert(self):
         """Test fetch_alert"""
-        alert = self.broker.fetch_alert(6911)
-        self.assertEqual(alert['right_ascension'], 242.322)
+        alert = self.broker.fetch_alert(1)
+        self.assertAlmostEqual(alert['right_ascension'], 222.2116, 2)
         for key in self.expected_keys:
             self.assertTrue(key in alert.keys())
 
