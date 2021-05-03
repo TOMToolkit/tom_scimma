@@ -12,7 +12,7 @@ from tom_alerts.exceptions import AlertSubmissionException
 from tom_targets.models import Target
 
 SCIMMA_URL = 'http://skip.dev.hop.scimma.org'
-SCIMMA_API_URL = f'{SCIMMA_URL}/api'
+SCIMMA_API_URL = f'{SCIMMA_URL}/api/v2'
 
 
 class SCIMMAQueryForm(GenericQueryForm):
@@ -21,8 +21,8 @@ class SCIMMAQueryForm(GenericQueryForm):
     cone_search = forms.CharField(required=False, label='Cone Search', help_text='RA, Dec, radius in degrees')
     polygon_search = forms.CharField(required=False, label='Polygon Search',
                                      help_text='Comma-separated pairs of space-delimited coordinates (degrees)')
-    alert_timestamp_after = forms.DateTimeField(required=False, label='Datetime lower')
-    alert_timestamp_before = forms.DateTimeField(required=False, label='Datetime upper')
+    timestamp_after = forms.DateTimeField(required=False, label='Datetime lower')
+    timestamp_before = forms.DateTimeField(required=False, label='Datetime upper')
     event_trigger_number = forms.CharField(required=False, label='LVC Trigger Number')
 
     def __init__(self, *args, **kwargs):
@@ -40,8 +40,8 @@ class SCIMMAQueryForm(GenericQueryForm):
             Fieldset(
                 'Time Filters',
                 Row(
-                    Column('alert_timestamp_after'),
-                    Column('alert_timestamp_before')
+                    Column('timestamp_after'),
+                    Column('timestamp_before')
                 )
             ),
             Fieldset(

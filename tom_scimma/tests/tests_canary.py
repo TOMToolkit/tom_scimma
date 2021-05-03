@@ -10,9 +10,9 @@ class TestSCIMMAModuleCanary(TestCase):
 
     def setUp(self):
         self.broker = SCIMMABroker()
-        self.expected_keys = ['id', 'alert_identifier', 'alert_timestamp', 'topic', 'right_ascension', 'declination',
-                              'right_ascension_sexagesimal', 'declination_sexagesimal', 'role', 'extracted_fields',
-                              'message', 'created', 'modified']
+        self.expected_keys = ['id', 'identifier', 'timestamp', 'topic', 'right_ascension', 'declination',
+                              'right_ascension_sexagesimal', 'declination_sexagesimal', 'parsed_message',
+                              'raw_message', 'created', 'modified']
 
     def test_boilerplate(self):
         self.assertTrue(True)
@@ -29,8 +29,8 @@ class TestSCIMMAModuleCanary(TestCase):
 
     def test_fetch_alert(self):
         """Test fetch_alert"""
-        alert = self.broker.fetch_alert(1)
-        self.assertAlmostEqual(alert['right_ascension'], 222.2116, 2)
+        alert = self.broker.fetch_alert(1000)
+        self.assertAlmostEqual(alert['right_ascension'], 55.25, 2)
         for key in self.expected_keys:
             self.assertTrue(key in alert.keys())
 
