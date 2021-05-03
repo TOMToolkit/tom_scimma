@@ -78,7 +78,7 @@ class TestSCIMMABrokerClass(TestCase):
         generic_alert = SCIMMABroker().to_generic_alert(test_alert)
 
         # NOTE: The string is hardcoded as a sanity check to ensure that the string is reviewed if it changes
-        self.assertEqual(generic_alert.url, f'http://skip.dev.hop.scimma.org/api/alerts/{test_alert["id"]}')
+        self.assertEqual(generic_alert.url, f'http://skip.dev.hop.scimma.org/api/v2/alerts/{test_alert["id"]}')
         self.assertEqual(generic_alert.score, '')
 
     def test_to_generic_alert_lvc_topic(self):
@@ -89,7 +89,7 @@ class TestSCIMMABrokerClass(TestCase):
         generic_alert = SCIMMABroker().to_generic_alert(test_alert)
 
         # NOTE: The string is hardcoded as a sanity check to ensure that the string is reviewed if it changes
-        self.assertEqual(generic_alert.url, f'http://skip.dev.hop.scimma.org/api/alerts/{test_alert["id"]}')
+        self.assertEqual(generic_alert.url, f'http://skip.dev.hop.scimma.org/api/v2/alerts/{test_alert["id"]}')
         self.assertEqual(generic_alert.score, '3')
 
     def test_to_target_any_topic(self):
