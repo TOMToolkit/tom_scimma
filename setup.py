@@ -28,8 +28,8 @@ setup(
     use_scm_version=True,  # use_scm_version and setup_requires setuptools_scm are required for automated releases
     setup_requires=['setuptools_scm', 'wheel'],
     install_requires=[
-        'tomtoolkit~=2.6',
-        'hop-client~=0.3'
+        'tomtoolkit~=2.10',
+        'hop-client~=0.5'
     ],
     extras_require={
         'test': ['factory_boy~=3.1']
