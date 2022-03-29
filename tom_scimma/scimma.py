@@ -13,7 +13,7 @@ from tom_targets.models import Target
 
 SCIMMA_URL = 'http://skip.dev.hop.scimma.org'
 SCIMMA_API_URL = f'{SCIMMA_URL}/api'
-#SCIMMA_API_URL = f'{SCIMMA_URL}/api/v2'
+# SCIMMA_API_URL = f'{SCIMMA_URL}/api/v2'
 
 
 class SCIMMAQueryForm(GenericQueryForm):

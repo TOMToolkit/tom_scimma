@@ -78,7 +78,6 @@ class TestSCIMMABrokerClass(TestCase):
         generic_alert = SCIMMABroker().to_generic_alert(test_alert)
 
         # NOTE: The string is hardcoded as a sanity check to ensure that the string is reviewed if it changes
-        #self.assertEqual(generic_alert.url, f'http://skip.dev.hop.scimma.org/api/v2/alerts/{test_alert["id"]}')
         self.assertEqual(generic_alert.url, f'{SCIMMA_API_URL}/alerts/{test_alert["id"]}')
         self.assertEqual(generic_alert.score, '')
 
